@@ -397,9 +397,14 @@ Matrix<rows, cols, T>::operator U() const {
 template<int rows, int cols, class T>
 bool Matrix<rows, cols, T>::operator==(const Matrix<rows, cols, T>& other) const
 {
+    T diff;
     for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; ++j) {
-            if (data[i][j] != other.data[i][j])
+        for (int j = 0; j < cols; ++j)
+        {
+            diff= (data[i][j] - other.data[i][j]);
+            if (diff<0)
+                diff= -diff;
+            if (diff>DBL_EPSILON)
             {
                 return false;
             }
