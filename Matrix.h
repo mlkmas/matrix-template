@@ -41,6 +41,8 @@ public:
     T& operator()(int row, int col);//op()modify a specific cell
     const T& operator()(int row, int col)const; //const op()version
     template<typename U> operator U() const;//return trave sum
+    bool operator==(const Matrix<rows, cols, T>& other) const;
+    bool operator!=(const Matrix<rows, cols, T>& other) const;
 
     friend std::ostream& operator<<(std::ostream& os, const Matrix<rows,cols,T>&mat);//operator<<
 
@@ -391,4 +393,22 @@ Matrix<rows, cols, T>::operator U() const {
         trace += static_cast<U>(data[i][i]);
     }
     return trace;
+}
+template<int rows, int cols, class T>
+bool Matrix<rows, cols, T>::operator==(const Matrix<rows, cols, T>& other) const
+{
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            if (data[i][j] != other.data[i][j])
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+template<int rows, int cols, class T>
+bool Matrix<rows, cols, T>::operator!=(const Matrix<rows, cols, T>& other) const
+{
+    return !((*this) == other);
 }
