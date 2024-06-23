@@ -172,7 +172,7 @@ Matrix<rows, cols, T>& Matrix<rows, cols, T>::operator=(const Matrix<rows, cols,
         for(int i=0;i<rowsSize;i++)
             for (int j = 0; j < colsSize; j++)
             {
-                data[i][j]=other[i][j];
+                data[i][j]=other.data[i][j];
             }
     }
         return *this;
