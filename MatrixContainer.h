@@ -5,7 +5,8 @@
 #include <stdexcept>
 #include "Matrix.h"
 #define INITIAL_CAPACITY 1
-template<int rows=0 , int cols=0, class T=double >
+
+template<int rows=0 , int cols=0, class T=int >
 class MatrixContainer
 {
 private:
@@ -99,7 +100,8 @@ void MatrixContainer<rows, cols, T>::addMatrix(const Matrix<rows, cols, T>& matr
     {
         resizeArray();
     }
-    array[containerSize++] = matrix;
+    array[containerSize] = matrix;
+    containerSize++;
 }
 template<int rows, int cols, class T>
 void MatrixContainer<rows, cols, T>::shrinkArray()
