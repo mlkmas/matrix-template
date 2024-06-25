@@ -24,7 +24,15 @@ public:
     void addMatrix(const Matrix<rows, cols, T>& matrix);
     void removeLastMatrix();
     Matrix<rows, cols, T>& operator[](int index);
-    friend std::ostream& operator<<(std::ostream& os, const MatrixContainer& container);
+    friend std::ostream& operator<<(std::ostream& os, const MatrixContainer& container)
+    {
+        os << "There are " << container.containerSize << " matrices in the container. The matrices:" << std::endl;
+        for (int i=0;i< container.containerSize;i++)
+        {
+            os << container.array[i] << std::endl;
+        }
+        return os;
+    }
     int size() const;
     int capacity() const;
     void resizeArray();
@@ -49,7 +57,10 @@ MatrixContainer<rows, cols, T>::~MatrixContainer()
     {
         array[i].~Matrix();
     }
-    delete[] array;
+
+
+        delete[] array;
+
     containerCapacity=0;
     containerSize=0;
 }
@@ -72,8 +83,9 @@ template<int rows, int cols, class T>
 MatrixContainer<rows, cols, T>::MatrixContainer(const MatrixContainer& other)
 :containerSize(other.containerSize),containerCapacity(other.containerCapacity)
 {
-    //do we have to delete this array first??
+
     array=new Matrix<rows, cols, T>[containerCapacity];
+
     for (int i=0;i<containerSize;i++)
     {
         array[i]=other.array[i];
@@ -140,16 +152,16 @@ Matrix<rows, cols, T>& MatrixContainer<rows, cols, T>::operator[](int index)
     return array[index];
 }
 
-template<int rows, int cols, class T>
-std::ostream& operator<<(std::ostream& os, const MatrixContainer<rows, cols, T>& container)
-{
-    os << "There are " << container.containerSize << " matrices in the container. The matrices:" << std::endl;
-    for (int i=0;i< container.containerSize;i++)
-    {
-        os << container.array[i] << std::endl;
-    }
-    return os;
-}
+//template<int rows, int cols, class T>
+//std::ostream& operator<<(std::ostream& os, const MatrixContainer<rows, cols, T>& container)
+//{
+//    os << "There are " << container.containerSize << " matrices in the container. The matrices:" << std::endl;
+//    for (int i=0;i< container.containerSize;i++)
+//    {
+//        os << container.array[i] << std::endl;
+//    }
+//    return os;
+//}
 template<int rows, int cols, class T>
 int MatrixContainer<rows,cols,T>::size() const
 {

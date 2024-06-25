@@ -227,6 +227,7 @@ Matrix<rows, cols, T>& Matrix<rows, cols, T>::operator=(const Matrix<rows, cols,
     }
         return *this;
 }
+
 template<int rows, int cols, class T>
 Matrix<rows, cols, T>::~Matrix()
 {
