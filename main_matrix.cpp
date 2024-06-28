@@ -26,7 +26,7 @@
 //}
 //
 //int main() {
-//   freopen("output_matrix.txt", "w", stdout);
+//   //freopen("output_matrix.txt", "w", stdout);
 //
 //    Matrix<4, 4> mat;
 //    std::cout << mat << std::endl;

@@ -1,31 +1,43 @@
+//Student1 Noor Zerene ID 212015168
+//Student2 Malak Masarwe ID 213622194
+
+
+#ifndef HW2_MATRIX_H
+#define HW2_MATRIX_H
+
+
 #include <iostream>
 #include <cfloat>
 #include <stdexcept>
 
+// Matrix template class definition
 template<int rows=0, int cols=0, class T=int >
 class Matrix
 {
 private:
-    int rowsSize;
-    int colsSize;
-    T** data;
+    int rowsSize; // Number of rows in the matrix
+    int colsSize; // Number of columns in the matrix
+    T** data;  // 2D array to hold matrix data
 public:
-    Matrix();//constructor
+    Matrix();//Defaultconstructor
     Matrix(T value);//constructor with initial value
     ~Matrix();//destructor
     Matrix(const Matrix& other);//copy cstr
     Matrix<rows,cols,T>& operator=(const Matrix<rows,cols,T>& other);//assignment operator
 
+
+    // Accessor methods
     int getRows() const { return rows; }
     int getCols() const { return cols; }
-    void allocateData(int,int);//since allocateData is void do we have to write this.allocate or to make it reurn data?
-    void fillData(int value,int ,int );//since fill is void do we have to write this.fill or to make it reurn data?
+    void allocateData(int,int);
+    void fillData(int value,int ,int );
     void copyData(T** dataTocopy, T** matData,int row,int col);
 
+// Diagonal and identity matrix
     T* getDiag(int &num);//return the diag of the mat
     Matrix<rows,cols,T> getIdentityMatrix();
 
-
+    // Arithmetic operators
     Matrix<rows,cols,T> operator+(const T& scalar);//mat+scalar
     Matrix<rows,cols,T> operator-(const T& scalar);
     Matrix<rows,cols,T> operator-(double scalar);//mat-scalar
@@ -35,7 +47,7 @@ public:
     Matrix<rows, cols, T> operator-(const Matrix<rows, cols, T>& other) const;//mat-mat
     Matrix<rows, cols, double> operator-(const Matrix<rows, cols, double>& other) ;//mat-mat
 
-
+    // Increment and decrement operators
     Matrix<rows,cols,T>& operator++();//prefix ++mat
     const Matrix<rows,cols,T> operator++(int);//postfix mat++
 
@@ -43,24 +55,27 @@ public:
     const Matrix<rows,cols,T> operator--(int);//postfix mat--
 
 
+// Unary minus operator
     Matrix<rows, cols, T> operator-() const; // -mat
 
-
+// Element-wise multiplication
     T rowColMultipy(int row,int col,const Matrix<rows, cols, T> &other);
 
 
 
     Matrix<rows, cols, T> operator*(const Matrix<rows, cols, T>& other) const;//mat*mat
 
+    // Access operators
     T& operator()(int row, int col);//op()modify a specific cell
     const T& operator()(int row, int col)const; //const op()version
 
-   // template<typename U> operator U() const;//return trace sum
+    // template<typename U> operator U() const;//return trace sum
     bool operator==(const Matrix<rows, cols, T>& other) const;
     bool operator!=(const Matrix<rows, cols, T>& other) const;
 
 
 
+// Scalar operations
     friend Matrix<rows,cols,T> operator+(const T& scalar,const Matrix<rows, cols, T>& mat)//scalar+mat
     {
         Matrix<rows, cols, T> result(mat);
@@ -78,20 +93,22 @@ public:
     }
 
 
-   friend std::ostream& operator<<(std::ostream& os, const Matrix<rows,cols,T>& mat)
-   {
-       for(int i=0;i<mat.rowsSize;i++)
-       {
-           for (int j = 0; j < mat.colsSize; j++)
-           {
-               os << mat.data[i][j] << " ";
+    // Output stream operator
+    friend std::ostream& operator<<(std::ostream& os, const Matrix<rows,cols,T>& mat)
+    {
+        for(int i=0;i<mat.rowsSize;i++)
+        {
+            for (int j = 0; j < mat.colsSize; j++)
+            {
+                os << mat.data[i][j] << " ";
 
-           }
-           os << std::endl;
-       }
-       return os;
-   }
+            }
+            os << std::endl;
+        }
+        return os;
+    }
 
+// Conversion operators
     explicit operator double();
     explicit operator float();
     explicit operator int();
@@ -99,16 +116,17 @@ public:
 
 };
 
+// Method definitions
 template<int rows, int cols, class T>
 void Matrix<rows, cols, T>::allocateData(int rowsSize, int colsSize) {
     if (rowsSize <= 0 || colsSize <= 0)
         return;
 
-        data = new T*[rowsSize];
-        for (int i = 0; i < rowsSize; i++)
-        {
-            data[i] = new T[colsSize]();
-        }
+    data = new T*[rowsSize];
+    for (int i = 0; i < rowsSize; i++)
+    {
+        data[i] = new T[colsSize]();
+    }
 
 }
 
@@ -123,7 +141,7 @@ void Matrix<rows, cols, T>::fillData(int value,int rowsSize,int colsSize)
     {
         data[i] = new T[colsSize]();
     }
-     for(int i=0;i<rowsSize;i++)
+    for(int i=0;i<rowsSize;i++)
     {
         for(int j=0;j<colsSize;j++)
         {
@@ -189,19 +207,18 @@ template<int rows, int cols, class T>
 Matrix<rows,cols,T>::Matrix(const Matrix<rows, cols, T> &other)
 {
     data = new T*[other.rowsSize];
-        rowsSize=other.rowsSize;
-        colsSize=other.colsSize;
+    rowsSize=other.rowsSize;
+    colsSize=other.colsSize;
     for (int i = 0; i < other.rowsSize; i++)
     {
         data[i] = new T[colsSize]();
     }
     for(int i=0;i<rowsSize;i++)
-    for (int j = 0; j < colsSize; j++)
-    {
-        data[i][j] =other.data[i][j];
-    }
-//        allocateData(other.rowsSize,other.colsSize);
-//        copyData(other.data,data,other.rowsSize);
+        for (int j = 0; j < colsSize; j++)
+        {
+            data[i][j] =other.data[i][j];
+        }
+
 }
 template<int rows, int cols, class T>
 Matrix<rows, cols, T>& Matrix<rows, cols, T>::operator=(const Matrix<rows, cols, T> &other) {
@@ -225,7 +242,7 @@ Matrix<rows, cols, T>& Matrix<rows, cols, T>::operator=(const Matrix<rows, cols,
                 data[i][j]=other.data[i][j];
             }
     }
-        return *this;
+    return *this;
 }
 
 template<int rows, int cols, class T>
@@ -271,19 +288,7 @@ Matrix<rows, cols, T> Matrix<rows, cols, T>::operator+(const Matrix<rows, cols, 
     return result;
 
 }
-//template<int rows, int cols, class T>
-//Matrix<rows, cols, T>& Matrix<rows, cols, T>::operator+(const Matrix<rows, cols, T> &other) const
-//{
-//    Matrix<rows, cols, T> result;
-//    for(int i=0;i<rowsSize;i++)
-//    {
-//        for( int j=0;j<colsSize;j++)
-//        {
-//            result.data[i][j]= data[i][j]+other.data[i][j];
-//        }
-//    }
-//    return result;
-//}
+
 template<int rows, int cols, class T>
 Matrix<rows, cols, T>& Matrix<rows, cols, T>::operator++()
 {
@@ -388,7 +393,7 @@ T *Matrix<rows, cols, T>::getDiag(int &num)
     }
     return diag;
 }
-// in case of rows!=cols what to do??
+
 template<int rows, int cols, class T>
 Matrix<rows,cols,T> Matrix<rows,cols,T>::getIdentityMatrix()
 {
@@ -540,3 +545,5 @@ Matrix<rows, cols, T>::operator int()
     }
     return trace;
 }
+
+#endif //HW2_MATRIX_H
